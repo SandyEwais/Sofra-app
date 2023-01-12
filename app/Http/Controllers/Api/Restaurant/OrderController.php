@@ -99,7 +99,46 @@ class OrderController extends Controller
 
 
     //current orders
-    public function currentOrders(Request $request){}
+    public function currentOrders(Request $request){
+        $orders = $request->user()->orders()->where('state','=','accepted')->latest()->paginate(6);
+        if(count($orders)){
+            return responseJson(200,'succuess',OrderResource::collection($orders));
+        }else{
+            return responseJson(0,'No Data');
+        }
+    }
+    public function confirmDelivery(Request $request){
+        $validator = validator()->make($request->all(),[
+            'order_id' => 'required|exists:orders,id'
+        ]);
+        if($validator->fails()){
+            return responseJson(0,'failure',$validator->errors());
+        }
+        $order = $request->user()->orders->where('id',$request->order_id)->first();
+        if($order){
+            
+            if($order->state == 'accepted'){
+                $order->update([
+                    'state' => 'delivered'
+                ]);
+                return responseJson('1','success',new OrderResource($order->fresh()));
+
+
+            }else{
+                return responseJson(0,'failure','Something Went Wrong');
+            }
+        }else{
+            return responseJson(0,'failure','Something Went Wrong');
+        }
+        
+    }
     //past orders
-    public function pastOrders(Request $request){}
+    public function pastOrders(Request $request){
+        $orders = $request->user()->orders()->whereIn('state',['delivered','rejected','declined'])->latest()->paginate(5);
+        if(count($orders)){
+            return responseJson(200,'success',OrderResource::collection($orders));
+        }else{
+            return responseJson(0,'failure','No Past Orders');
+        }
+    }
 }

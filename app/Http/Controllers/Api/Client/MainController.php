@@ -17,6 +17,7 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\RestaurantResource;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\OrderResource;
+use Carbon\Carbon;
 
 class MainController extends Controller
 {
@@ -57,13 +58,29 @@ class MainController extends Controller
 
     public function addComment(Request $request){
         $validator = validator()->make($request->all(),[
-            'rate' => 'required',
+            'rate' => 'required|in:1,2,3,4,5',
             'body' => 'required',
         ]);
         if($validator->fails()){
             return responseJson('0','failure',$validator->errors());
         }
         $comment = Comment::create($request->all());
+        // $ratings = Comment::where('restaurant_id',$request->restaurant_id->id)->get('rate');
+        // $ratingValues = [];
+
+        // foreach ($ratings as $rating) {
+        //     $ratingValues[] = $rating->rate;
+        // }
+
+        // $ratingAverage = collect($ratingValues)->sum() / $ratings->count();
+        // $update = $request->user()->update([
+        //     'star_rate' => $ratingAverage
+        // ]);
+        // if($update) {
+        //     return responseJson(200,'success');
+        // }else{
+        //     return responseJson(404,'failure','Something Went Wrong');
+        // }
         return responseJson(200,'success',new CommentResource($comment));
 
     }
@@ -74,7 +91,11 @@ class MainController extends Controller
     }
 
     public function allOffers(){
-        $offers = Offer::latest()->paginate(6);
+        $offers = Offer::all()->filter(function($item) {
+            if (Carbon::now()->between($item->start_date, $item->end_date)) {
+              return $item;
+            }
+          });
         return responseJson(200,'success',OfferResource::collection($offers));
     }
 

@@ -15,7 +15,7 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'restaurant' => $this->relationLoaded('restaurant') ? new RestaurantResource($this->restaurant) : null,// n+1
+            'restaurant' => new RestaurantResource($this->restaurant),// n+1
             'date_time' => $this->created_at,
             'address' => $this->delivery_address,
             'meals_cost' => $this->meals_cost,

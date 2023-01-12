@@ -43,12 +43,12 @@ class OrderController extends Controller
             $readySet = [
                 $set['meal_id'] => [
                     'quantity' => $set['quantity'],
-                    'meal_price' => $meal->price, //sale
+                    'meal_price' => $meal->price_sale ? $meal->price_sale : $meal->price,
                     'notes' => $set['notes'] ? $set['notes'] : ''
                 ]
             ];
-            $order->meals()->attach($readySet); //check for sale
-            $mealsCost += ($meal->price * $set['quantity']);
+            $order->meals()->attach($readySet);
+            $mealsCost += (($meal->price_sale ? $meal->price_sale : $meal->price) * $set['quantity']);
         }
 
         if($mealsCost < $restaurant->minimum){
@@ -58,7 +58,7 @@ class OrderController extends Controller
         }
 
         $total = $mealsCost + $delivery_fees;
-        $commission = settings()->commission * $mealsCost;
+        $commission = (settings()->commission/100) * $mealsCost;
         $restaurantNet = $total - $commission;
         $order->update([
             'meals_cost' => $mealsCost,
@@ -87,7 +87,7 @@ class OrderController extends Controller
     }
 
     public function pastOrders(Request $request){
-        $orders = $request->user()->orders()->whereIn('state',['delivered','rejected','canceled'])->latest()->paginate(5);
+        $orders = $request->user()->orders()->whereIn('state',['delivered','rejected','declined'])->latest()->paginate(5);
         if(count($orders)){
             return responseJson(200,'success',OrderResource::collection($orders));
         }else{

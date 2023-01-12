@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Traits\IsBetweenDate;
+use App\Http\Traits\IsValidDate;
 use Illuminate\Database\Eloquent\Model;
 
 class Offer extends Model 

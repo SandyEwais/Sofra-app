@@ -91,10 +91,13 @@ Route::group(['prefix' => 'v1'],function(){
                 Route::post('/accept-order','acceptOrder');
                 Route::post('/reject-order','rejectOrder');
                 Route::get('/current-orders','currentOrders');
+                Route::post('/confirm-delivery','confirmDelivery');
                 Route::get('/past-orders','pastOrders');
             });
             Route::controller(App\Http\Controllers\Api\Restaurant\MainController::class)->group(function(){
                 Route::get('/comments','comments');
+                Route::get('/payments','payments');
+                Route::get('/rating','rating');
             });
         });
     });
