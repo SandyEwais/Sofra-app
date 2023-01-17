@@ -22,7 +22,7 @@ class OrderController extends Controller
         if($validator->fails()){
             return responseJson(422,'failure',$validator->errors());
         }
-        $restaurant = Restaurant::where('id',$request->restaurant_id)->first();
+        $restaurant = Restaurant::find($request->restaurant_id);
         if($restaurant->state == 'closed'){
             return responseJson(0,'failure','Restaurant is closed now, come back during working hours');
         }
@@ -147,7 +147,7 @@ class OrderController extends Controller
         if($validator->fails()){
             return responseJson(0,'failure',$validator->errors());
         }
-        $order = Order::where('id',$request->order_id)->first();
+        $order = Order::find($request->order_id);
         if($order->state == 'accepted'){
             $order->update([
                 'state' => 'declined'

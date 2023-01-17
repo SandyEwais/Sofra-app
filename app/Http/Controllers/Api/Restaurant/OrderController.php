@@ -25,7 +25,7 @@ class OrderController extends Controller
         if($validator->fails()){
             return responseJson(0,'failure',$validator->errors());
         }
-        $order = $request->user()->orders->where('id',$request->order_id)->first();
+        $order = $request->user()->orders->find($request->order_id);
         if($order){
             
             if($order->state == 'pending'){
@@ -66,7 +66,7 @@ class OrderController extends Controller
         if($validator->fails()){
             return responseJson(0,'failure',$validator->errors());
         }
-        $order = $request->user()->orders->where('id',$request->order_id)->first();
+        $order = $request->user()->orders->find($request->order_id);
         if($order){
             if($order->state == 'pending'){
                 $order->update([
@@ -114,7 +114,7 @@ class OrderController extends Controller
         if($validator->fails()){
             return responseJson(0,'failure',$validator->errors());
         }
-        $order = $request->user()->orders->where('id',$request->order_id)->first();
+        $order = $request->user()->orders->find($request->order_id);
         if($order){
             
             if($order->state == 'accepted'){

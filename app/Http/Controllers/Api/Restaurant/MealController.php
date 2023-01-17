@@ -45,7 +45,7 @@ class MealController extends Controller
         if($validator->fails()){
             return responseJson(0,'failure',$validator->errors());
         }
-        $meal = $request->user()->meals()->where('id',$request->meal_id)->first();
+        $meal = $request->user()->meals()->find($request->meal_id);
         if($meal){
             $update = $meal->update($request->all());
             if($update){
@@ -62,7 +62,7 @@ class MealController extends Controller
         if($validator->fails()){
             return responseJson(0,'failure',$validator->errors());
         }
-        $meal = $request->user()->meals()->where('id',$request->meal_id)->first();
+        $meal = $request->user()->meals()->find($request->meal_id);
         if($meal){
             $delete = $meal->delete();
             if($delete){

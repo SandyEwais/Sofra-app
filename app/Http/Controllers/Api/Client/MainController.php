@@ -26,7 +26,7 @@ class MainController extends Controller
     public function allRestaurants(Request $request){
         $restaurants = Restaurant::where(function($query) use($request){
             if($request->has('city_id')){
-                $neighborhood = Neighborhood::where('city_id',$request->city_id)->first();
+                $neighborhood = Neighborhood::find($request->city_id);
                 $query->where('neighborhood_id',$neighborhood->id);
             }
             if($request->has('search')){
@@ -41,7 +41,7 @@ class MainController extends Controller
     }
 
     public function singleRestaurant(Request $request){
-        $restaurant = Restaurant::where('id',$request->restaurant_id)->with('meals','comments')->first();
+        $restaurant = Restaurant::find($request->restaurant_id);
         if(!$restaurant){
             return responseJson(0,'failure');
         }
@@ -49,7 +49,7 @@ class MainController extends Controller
     }
 
     public function singleMeal(Request $request){
-        $meal = Meal::where('id',$request->meal_id)->first();
+        $meal = Meal::find($request->meal_id);
         if(!$meal){
             return responseJson(0,'failure');
         }
@@ -65,22 +65,12 @@ class MainController extends Controller
             return responseJson('0','failure',$validator->errors());
         }
         $comment = Comment::create($request->all());
-        // $ratings = Comment::where('restaurant_id',$request->restaurant_id->id)->get('rate');
-        // $ratingValues = [];
 
-        // foreach ($ratings as $rating) {
-        //     $ratingValues[] = $rating->rate;
-        // }
-
-        // $ratingAverage = collect($ratingValues)->sum() / $ratings->count();
-        // $update = $request->user()->update([
-        //     'star_rate' => $ratingAverage
-        // ]);
-        // if($update) {
-        //     return responseJson(200,'success');
-        // }else{
-        //     return responseJson(404,'failure','Something Went Wrong');
-        // }
+        $restaurant = $comment->restaurant;
+        $rate = $restaurant->comments()->avg('rate');
+        $restaurant->update([
+            'star_rate' => $rate
+        ]);
         return responseJson(200,'success',new CommentResource($comment));
 
     }

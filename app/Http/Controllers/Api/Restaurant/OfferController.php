@@ -43,7 +43,7 @@ class OfferController extends Controller
         if($validator->fails()){
             return responseJson(0,'failure',$validator->errors());
         }
-        $offer = $request->user()->offers()->where('id',$request->offer_id)->first();
+        $offer = $request->user()->offers()->find($request->offer_id);
         if($offer){
             $update = $offer->update($request->all());
             if($update){
@@ -62,7 +62,7 @@ class OfferController extends Controller
         if($validator->fails()){
             return responseJson(0,'failure',$validator->errors());
         }
-        $offer = $request->user()->offers()->where('id',$request->offer_id)->first();
+        $offer = $request->user()->offers()->find($request->offer_id);
         if($offer){
             $delete = $offer->delete();
             if($delete){

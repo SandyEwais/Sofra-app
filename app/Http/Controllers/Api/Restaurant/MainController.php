@@ -21,18 +21,11 @@ class MainController extends Controller
         }
     }
     public function payments(Request $request){
-        $records = $request->user()->orders()->get(['total_order_price','app_commission']);
-        $income = [];
-        $commission = [];
-        // return $records;
-        foreach($records as $record){
-            $income[] = $record['total_order_price'];
-            $commission[] = $record['app_commission'];
-        }
-        return responseJson(200,'success',[
-            'income' => collect($income)->sum(),
-            'commission' => collect($commission)->sum()
-        ]);
+        $totalSales =  $request->user()->orders()->sum('total_order_price');
+        $totalCommissions =  $request->user()->orders()->sum('app_commission');
+        $totalPayments =  $request->user()->payments()->sum('paid_fees');
+        $remaining = $totalCommissions - $totalPayments;
+        return responseJson(200,'success',compact('totalSales','totalCommissions','totalPayments','remaining'));
     }
 
     public function rating(Request $request){
