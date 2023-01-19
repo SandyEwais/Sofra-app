@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Http\Traits\Searchable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Client extends Authenticatable 
 {
-    use HasApiTokens;
+    use HasApiTokens, Searchable;
     protected $hidden = [
         'password',
         'pin_code'

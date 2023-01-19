@@ -8,8 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Restaurant extends Authenticatable 
 {
-    use HasApiTokens;
-    use Searchable;
+    use HasApiTokens, Searchable;
     protected $hidden = [
         'password',
         'pin_code'

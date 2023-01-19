@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Http\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model 
 {
+    use Searchable;
 
     protected $table = 'comments';
     public $timestamps = true;

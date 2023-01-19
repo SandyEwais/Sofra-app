@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Http\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model 
 {
+    use Searchable;
+    public $columns = ['paid_fees'];
 
     protected $table = 'payments';
     public $timestamps = true;

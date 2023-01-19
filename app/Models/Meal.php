@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Http\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Meal extends Model 
 {
+    use Searchable;
 
     protected $table = 'meals';
     public $timestamps = true;

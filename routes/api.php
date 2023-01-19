@@ -108,7 +108,7 @@ Route::group(['prefix' => 'v1'],function(){
 
 
     //general
-    Route::controller(App\Http\Controllers\Api\Client\GeneralController::class)->group(function(){
+    Route::controller(App\Http\Controllers\Api\GeneralController::class)->group(function(){
         Route::get('/settings','settings');
         Route::post('/contact-us','contact');
         Route::get('/categories','categories');
