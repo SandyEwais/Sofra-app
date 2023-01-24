@@ -13,10 +13,10 @@ class Restaurant extends Authenticatable
         'password',
         'pin_code'
     ];
-    public $columns = ['name'];
+    public $columns = ['name', 'email', 'phone', 'password', 'image', 'star_rate', 'minimum_charge', 'delivery_fees', 'state'];
     protected $table = 'restaurants';
     public $timestamps = true;
-    protected $fillable = array('name', 'email', 'phone', 'password', 'image', 'star_rate', 'minimum_charge', 'delivery_fees', 'state', 'contact_phone', 'whatsapp', 'neighborhood_id');
+    protected $fillable = array('name', 'email', 'phone', 'password', 'image', 'star_rate', 'minimum_charge', 'delivery_fees', 'state', 'contact_phone', 'whatsapp', 'neighborhood_id','activation');
 
     public function meals()
     {

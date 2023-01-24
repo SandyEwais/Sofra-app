@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title','Restaurants')
+@section('title','Clients')
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -7,7 +7,7 @@
             <div class="card-header">
                 
                 <div class="card-tools">
-                    <form action="{{route('restaurants.index')}}">
+                    <form action="{{route('clients.index')}}">
                         <div class="input-group input-group-sm" style="width: 150px;">
                             <input type="text" name="search" class="form-control float-right" placeholder="Search">
                             <div class="input-group-append">
@@ -24,39 +24,37 @@
             @if (session('message'))
             <div x-data={show:true} x-init="setTimeout(() => show =false,3000)">
                 <div x-show="show" x-transition.duration.500ms class="alert alert-success alert-dismissible">
-                        {{session('message')}}
+                    {{session('message')}}
                 </div>
             </div>
             @endif
-            @if (count($restaurants))
+            @if (count($clients))
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Image</th>
                                 <th>Name</th>
-                                <th>Offers</th>
-                                <th>Payments</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Neighborhood</th>
                                 <th>Action</th>
                                 <th>Activation</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($restaurants as $restaurant)
+                            @foreach ($clients as $client)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{$restaurant->image}}</td>
-                                    <td>{{$restaurant->name}}</td>
-                                    <td><a href="{{route('offers.index')}}?restaurant_id={{$restaurant->id}}" class="btn btn-outline-success btn-xs"><i class="fas fa-dollar-sign"></i> Offers</a></td>
-                                    <td><a href="{{route('payments.index')}}?restaurant_id={{$restaurant->id}}" class="btn btn-outline-success btn-xs"><i class="far fa-credit-card"></i> Payments</a></td>
+                                    <td>{{$client->name}}</td>
+                                    <td>{{$client->email}}</td>
+                                    <td>{{$client->phone}}</td>
+                                    <td>{{$client->neighborhood->name}}</td>
                                     <td>
-                                        <a href="{{route('restaurants.show',$restaurant->id)}}" class="btn btn-outline-info btn-xs"><i class="fas fa-eye"></i> Show</a>
-                                        <a data-value="{{'restaurants,'.$restaurant->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
-                                        
+                                        <a data-value="{{'clients,'.$client->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
                                     </td>
                                     <td>
-                                        <a data-value="{{'restaurants,'.$restaurant->id}}{{$restaurant->activation == 1 ? ',Deactivation' : ',Activation' }}" class="btn {{$restaurant->activation == 1 ? 'btn-dark' : 'btn-outline-light'}} btn-xs activateBtn"><i class=""></i> {{$restaurant->activation == 1 ? 'Activated' : 'Deactivated'}}</a>
+                                        <a data-value="{{'clients,'.$client->id}}{{$client->activation == 1 ? ',Deactivation' : ',Activation' }}" class="btn {{$client->activation == 1 ? 'btn-dark' : 'btn-outline-light'}} btn-xs activateBtn"><i class=""></i> {{$client->activation == 1 ? 'Activated' : 'Deactivated'}}</a>
                                     </td>
                                 </tr>
                             @endforeach

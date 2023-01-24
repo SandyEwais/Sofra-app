@@ -9,6 +9,6 @@ class Settings extends Model
 
     protected $table = 'settings';
     public $timestamps = true;
-    protected $fillable = array('about_text', 'accounts');
+    protected $fillable = array('about_text', 'accounts','commission');
 
 }

@@ -24,9 +24,11 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Restaurant $restaurant)
     {
-        //
+        return view('admin.restaurants.show',[
+            'restaurant' => $restaurant
+        ]);
     }
     /**
      * Remove the specified resource from storage.
@@ -39,5 +41,23 @@ class RestaurantController extends Controller
         $restaurant->delete();
         return redirect()->route('restaurants.index')->with('message','Action Success !');
         
+    }
+
+    public function activate(Restaurant $restaurant){
+        if($restaurant->activation == 0){
+            $restaurant->update([
+                'activation' => 1
+            ]);
+            return redirect()->route('restaurants.index')->with('message','Action Success !');
+        }
+        
+    }
+    public function deactivate(Restaurant $restaurant){
+        if($restaurant->activation == 1){
+            $restaurant->update([
+                'activation' => 0
+            ]);
+            return redirect()->route('restaurants.index')->with('message','Action Success !');
+        }
     }
 }

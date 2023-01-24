@@ -14,6 +14,7 @@ class CreateRestaurantsTable extends Migration {
 			$table->string('email');
 			$table->string('phone');
 			$table->string('password');
+			$table->boolean('activation')->default(1);
 			$table->string('image');
 			$table->tinyInteger('star_rate');
 			$table->decimal('minimum_charge');

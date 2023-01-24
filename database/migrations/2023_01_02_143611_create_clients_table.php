@@ -13,6 +13,7 @@ class CreateClientsTable extends Migration {
 			$table->timestamps();
 			$table->string('email');
 			$table->string('password');
+			$table->boolean('activation')->default(1);
 			$table->string('phone');
 			$table->string('pin_code')->nullable();
 			$table->integer('neighborhood_id')->unsigned();

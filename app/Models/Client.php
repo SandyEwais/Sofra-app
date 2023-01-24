@@ -14,9 +14,10 @@ class Client extends Authenticatable
         'pin_code'
     ];
 
+    public $columns = ['name','email','phone'];
     protected $table = 'clients';
     public $timestamps = true;
-    protected $fillable = array('email', 'password', 'phone', 'pin_code', 'neighborhood_id', 'name');
+    protected $fillable = array('email', 'password', 'phone', 'pin_code', 'neighborhood_id', 'name','activation');
 
     public function neighborhood()
     {
