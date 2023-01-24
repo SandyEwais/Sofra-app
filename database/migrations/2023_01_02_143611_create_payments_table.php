@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreatePaymentsTable extends Migration {
 
@@ -12,7 +13,7 @@ class CreatePaymentsTable extends Migration {
 			$table->timestamps();
 			$table->decimal('paid_fees');
 			$table->datetimeTz('payment_date');
-			$table->mediumText('notes');
+			$table->mediumText('notes')->nullable();
 			$table->integer('restaurant_id')->unsigned();
 		});
 	}

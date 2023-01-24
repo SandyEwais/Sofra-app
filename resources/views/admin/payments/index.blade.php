@@ -36,26 +36,21 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Image</th>
-                                <th>Title</th>
-                                <th>Discription</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Action</th>
+                                <th>Restaurant</th>
+                                <th>Paid</th>
+                                <th>Payment Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($payments as $payment)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{$payment->image}}</td>
-                                    <td>{{$payment->title}}</td>
-                                    <td>{{$payment->description}}</td>
-                                    <td>{{$payment->start_date}}</td>
-                                    <td>{{$payment->end_date}}</td>
+                                    <td>{{$payment->restaurant->name}}</td>
+                                    <td>{{$payment->paid_fees}}</td>
+                                    <td>{{$payment->payment_date}}</td>
                                     <td>
-                                        <a href="#" data-target="{{$payment->id}}" class="btn btn-outline-danger btn-xs"><i class="fas fa-trash"></i> Delete</a>
-                                        
+                                        <a href="{{route('payments.edit',['payment' => $payment->id])}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
+                                        <a data-value="{{'payments,'.$payment->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -79,12 +74,12 @@
 @endsection
 @push('scripts')
     <script>
-        // $(".deleteBtn").click(function(){
-        //     $("#confirmationModal").modal();
-        //     $("#confirmationModalTitle").html("Deletion");
-        //     $("#proceedBtn").addClass("btn btn-danger");
-        //     var id = $(this).attr('data-target');
-        //     $("#confirmationModalForm").attr('action','{{route("payments.destroy",["payment" => "id"])}}')
-        // });
+        $(".deleteBtn").click(function(){
+            $("#confirmationModal").modal();
+            $("#confirmationModalTitle").html("Deletion");
+            $("#proceedBtn").removeClass("btn btn-secondary").addClass("btn btn-danger");
+            var data = $(this).attr('data-value');
+            $("#proceedBtn").attr('data-value',data);
+        });
     </script>
 @endpush

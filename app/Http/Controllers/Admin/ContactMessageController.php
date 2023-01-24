@@ -80,8 +80,9 @@ class ContactMessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ContactMessage $contactMessage)
     {
-        //
+        $contactMessage->delete();
+        return redirect()->route('contact-messages.index')->with('message','Action Success !');
     }
 }

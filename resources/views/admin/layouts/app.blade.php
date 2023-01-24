@@ -199,12 +199,10 @@
               </div>
               <div class="modal-footer">
               <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-              <form id="confirmationModalForm" action="" method="POST">
-                @csrf
-                <button type="submit" id="proceedBtn" class="">Proceed</button>
-              </form>
+              <button id="proceedBtn" class="">Proceed</button>
               
-              </div>
+              
+            </div>
           </div>
         </div>
       </div>
@@ -243,10 +241,49 @@
     $("#logoutBtn").click(function(){
       $("#confirmationModal").modal();
       $("#confirmationModalTitle").html("Logout");
-      $("#proceedBtn").addClass("btn btn-secondary");
-      $("#confirmationModalForm").attr('action','{{route("logout")}}')
+      $("#proceedBtn").removeClass("btn btn-danger").addClass("btn btn-secondary");
     });
+    $("#proceedBtn").click(function(){
+      var title = $("#confirmationModalTitle").html();
+      if(title == 'Logout'){
+        $.ajax({
+          type: "POST",
+          url: "{{route('logout')}}",
+          data: {
+            "_token": "{{ csrf_token() }}"
+          },
+          success: function (data) {
+            location.reload();
+          },
+          error: function (error) {
+            location.reload();
+          }
+        });
+      }else if(title == 'Deletion'){
+        var data = $(this).attr('data-value');
+        var array = data.split(',');
+        var destination = array[0];
+        var id = array[1];
+        console.log(destination+id);
+        $.ajax({
+        url: "/admin/"+destination+"/"+id,
+        type: 'DELETE',
+        data: {
+            
+            "_token": "{{ csrf_token() }}",
+            "id": id
+        },
+        success: function (){
+            location.reload();
+        },
+        error: function (){
+           location.reload();
+        }
+        });
+      }
+    })
   });
+  
 </script>
 @stack('scripts')
 </body>

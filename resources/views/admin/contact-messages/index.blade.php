@@ -48,7 +48,9 @@
                                             <td>{{$contactMessage->email}}</td>
                                             <td>{{$contactMessage->phone}}</td>
                                             <td>{{$contactMessage->type}}</td>
-                                            <td><a href="#" data-target="{{$contactMessage->id}}" class="btn btn-outline-danger btn-xs"><i class="fas fa-trash"></i> Delete</a></td>
+                                            <td>
+                                                <a data-value="{{'contact-messages,'.$contactMessage->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                         <tr class="expandable-body">
                                             <td colspan="5">
@@ -76,6 +78,12 @@
 @endsection
 @push('scripts')
     <script>
-       
+       $(".deleteBtn").click(function(){
+            $("#confirmationModal").modal();
+            $("#confirmationModalTitle").html("Deletion");
+            $("#proceedBtn").removeClass("btn btn-secondary").addClass("btn btn-danger");
+            var data = $(this).attr('data-value');
+            $("#proceedBtn").attr('data-value',data);
+        });
     </script>
 @endpush

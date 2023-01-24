@@ -44,7 +44,7 @@ Route::group(['prefix' => 'admin'],function(){
 
         Route::resource('offers',OfferController::class)->only(['index','destroy']);
         Route::resource('contact-messages',ContactMessageController::class)->only(['index','destroy']);
-        Route::resource('payments',PaymentController::class)->only(['index','create','edit','destroy']);
+        Route::resource('payments',PaymentController::class)->only(['index','create','store','edit','update','destroy']);
         
         Route::post('/logout',[AuthController::class,'logout'])->name('logout');
     });

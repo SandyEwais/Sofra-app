@@ -49,10 +49,10 @@
                                     <td>{{$restaurant->image}}</td>
                                     <td>{{$restaurant->name}}</td>
                                     <td><a href="{{route('offers.index')}}?restaurant_id={{$restaurant->id}}" class="btn btn-outline-success btn-xs"><i class="fas fa-dollar-sign"></i> Offers</a></td>
-                                    <td><a href="#" class="btn btn-outline-success btn-xs"><i class="far fa-credit-card"></i> Payments</a></td>
+                                    <td><a href="{{route('payments.index')}}?restaurant_id={{$restaurant->id}}" class="btn btn-outline-success btn-xs"><i class="far fa-credit-card"></i> Payments</a></td>
                                     <td>
                                         <a href="#" class="btn btn-outline-info btn-xs"><i class="fas fa-eye"></i> Show</a>
-                                        <a href="#" data-target="{{$restaurant->id}}" class="btn btn-outline-danger btn-xs"><i class="fas fa-trash"></i> Delete</a>
+                                        <a data-value="{{'restaurants,'.$restaurant->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
                                         
                                     </td>
                                     <td>
@@ -80,12 +80,12 @@
 @endsection
 @push('scripts')
     <script>
-        // $(".deleteBtn").click(function(){
-        //     $("#confirmationModal").modal();
-        //     $("#confirmationModalTitle").html("Deletion");
-        //     $("#proceedBtn").addClass("btn btn-danger");
-        //     var id = $(this).attr('data-target');
-        //     $("#confirmationModalForm").attr('action','{{route("restaurants.destroy",["restaurant" => "id"])}}')
-        // });
+        $(".deleteBtn").click(function(){
+            $("#confirmationModal").modal();
+            $("#confirmationModalTitle").html("Deletion");
+            $("#proceedBtn").removeClass("btn btn-secondary").addClass("btn btn-danger");
+            var data = $(this).attr('data-value');
+            $("#proceedBtn").attr('data-value',data);
+        });
     </script>
 @endpush

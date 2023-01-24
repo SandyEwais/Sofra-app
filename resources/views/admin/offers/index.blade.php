@@ -51,7 +51,7 @@
                                     <td>{{$offer->start_date}}</td>
                                     <td>{{$offer->end_date}}</td>
                                     <td>
-                                        <a href="#" data-target="{{$offer->id}}" class="btn btn-outline-danger btn-xs"><i class="fas fa-trash"></i> Delete</a>
+                                        <a data-value="{{'offers,'.$offer->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
                                         
                                     </td>
                                 </tr>
@@ -76,12 +76,12 @@
 @endsection
 @push('scripts')
     <script>
-        // $(".deleteBtn").click(function(){
-        //     $("#confirmationModal").modal();
-        //     $("#confirmationModalTitle").html("Deletion");
-        //     $("#proceedBtn").addClass("btn btn-danger");
-        //     var id = $(this).attr('data-target');
-        //     $("#confirmationModalForm").attr('action','{{route("offers.destroy",["offer" => "id"])}}')
-        // });
+        $(".deleteBtn").click(function(){
+            $("#confirmationModal").modal();
+            $("#confirmationModalTitle").html("Deletion");
+            $("#proceedBtn").removeClass("btn btn-secondary").addClass("btn btn-danger");
+            var data = $(this).attr('data-value');
+            $("#proceedBtn").attr('data-value',data);
+        });
     </script>
 @endpush

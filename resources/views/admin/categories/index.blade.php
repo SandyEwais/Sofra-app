@@ -48,7 +48,7 @@
                                     <td>{{$category->name}}</td>
                                     <td>
                                         <a href="{{route('categories.edit',['category' => $category->id])}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
-                                        <a href="#" data-target="{{$category->id}}" class="btn btn-outline-danger btn-xs"><i class="fas fa-trash"></i> Delete</a>
+                                        <a data-value="{{'categories,'.$category->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
                                         
                                     </td>
                                 </tr>
@@ -73,12 +73,12 @@
 @endsection
 @push('scripts')
     <script>
-        // $(".deleteBtn").click(function(){
-        //     $("#confirmationModal").modal();
-        //     $("#confirmationModalTitle").html("Deletion");
-        //     $("#proceedBtn").addClass("btn btn-danger");
-        //     var id = $(this).attr('data-target');
-        //     $("#confirmationModalForm").attr('action','{{route("categories.destroy",["category" => "id"])}}')
-        // });
+        $(".deleteBtn").click(function(){
+            $("#confirmationModal").modal();
+            $("#confirmationModalTitle").html("Deletion");
+            $("#proceedBtn").removeClass("btn btn-secondary").addClass("btn btn-danger");
+            var data = $(this).attr('data-value');
+            $("#proceedBtn").attr('data-value',data);
+        });
     </script>
 @endpush

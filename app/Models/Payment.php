@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model 
 {
     use Searchable;
-    public $columns = ['paid_fees'];
+    public $columns = ['paid_fees','payment_date','notes'];
 
     protected $table = 'payments';
     public $timestamps = true;

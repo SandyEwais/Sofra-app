@@ -20,7 +20,7 @@
                 <select name="city_id" class="custom-select rounded-0" id="exampleSelectRounded0">
                     <option value="" selected disabled hidden >Select</option>
                     @foreach ($cities->all() as $city)
-                        <option value="{{$city->id}}">{{$city->name}}</option>
+                        <option {{ (collect(old('city_id'))->contains($city->id)) ? 'selected':'' }} value="{{$city->id}}">{{$city->name}}</option>
                     @endforeach
                 </select>
                 @error('city_id')
