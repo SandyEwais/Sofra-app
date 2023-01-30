@@ -1,20 +1,51 @@
+
 @extends('admin.layouts.app')
-@section('title','Settings')
+@section('title','Edit Settings')
 @section('content')
-<div class="card">
-    <div class="card-body">
-        <dl class="row">
+<div class="card card-primary">
+    @if (session('message'))
+        <div x-data={show:true} x-init="setTimeout(() => show =false,3000)">
+            <div x-show="show" x-transition.duration.500ms class="alert alert-success alert-dismissible">
+                    {{session('message')}}
+            </div>
+        </div>
+    @endif
+    <form action="{{route('settings.update',$settings->id)}}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="card-body">
+            <div class="form-group">
+                <label>About Text</label>
+                <textarea name="about_text" class="form-control">{{$settings->about_text}}</textarea>
+                @error('about_text')
+                    <p class="text-danger text-sm">{{$message}}</p>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label>Accounts</label>
+                <input name="accounts" type="text" class="form-control" value="{{$settings->accounts}}">
+                @error('accounts')
+                    <p class="text-danger text-sm">{{$message}}</p>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label>Commission <span class="text-muted text-sm">(must enter a percentage. ex:60%)</span></label>
+                <div class="input-group mb-3">
+                    <input name="commission" type="text" class="form-control" value="{{$settings->commission}}">
+                    <div class="input-group-append">
+                        <span class="input-group-text">%</span>
+                    </div>
+                    @error('commission')
+                        <p class="text-danger text-sm">{{$message}}</p>
+                    @enderror
+                </div>
+            </div>
             
-            <dt class="col-sm-4">About Text:</dt>
-            <dd class="col-sm-8">{{$settings->about_text}}</dd>
-            <dt class="col-sm-4">Accounts:</dt>
-            <dd class="col-sm-8">{{$settings->accounts}}</dd>
-            <dt class="col-sm-4">Commission:</dt>
-            <dd class="col-sm-8">{{$settings->commission}}%</dd>
-            
-        </dl>
-        <a href="{{route('settings.edit',$settings->id)}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
-    </div>
-    
+        </div>
+        
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info">Submit</button>
+        </div>
+    </form>
 </div>
 @endsection

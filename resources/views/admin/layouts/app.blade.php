@@ -59,7 +59,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{asset('adminAssets/dist/img/user1-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{asset('adminAssets/dist/img/user1-128x128.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{Auth::user()->name}}</a>
@@ -71,107 +71,126 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          {{-- <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../../index.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
-          </li> --}}
-          <li class="nav-item">
-            <a href="{{route('clients.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Clients
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('restaurants.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-utensils"></i>
-              <p>
-                Restaurants
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('offers.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-dollar-sign"></i>
-              <p>
-                Offers
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('payments.index')}}" class="nav-link">
-              <i class="nav-icon far fa-credit-card"></i>
-              <p>
-                Payments
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('cities.index')}}" class="nav-link">
-              <i class="nav-icon 	fas fa-city"></i>
-              <p>
-                Cities
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('categories.index')}}" class="nav-link">
-              <i class="nav-icon 	fas fa-boxes"></i>
-              <p>
-                Categories
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('neighborhoods.index')}}" class="nav-link">
-              <i class="nav-icon 	fas fa-map"></i>
-              <p>
-                Neighborhoods
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('contact-messages.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-comment"></i>
-              <p>
-                Contact Messages
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('settings.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-cog"></i>
-              <p>
-                Settings
-              </p>
-            </a>
-          </li>
+          @if(Auth::user()->can('users.access') || Auth::user()->can('roles.access'))
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard Permissions
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                @can('users_access')
+                  <li class="nav-item">
+                    <a href="{{route('users.index')}}" class="nav-link">
+                      <i class="fas fa-users nav-icon"></i>
+                      <p>Users</p>
+                    </a>
+                  </li>
+                @endcan
+                @can('roles_access')
+                  <li class="nav-item">
+                    <a href="{{route('roles.index')}}" class="nav-link">
+                      <i class="fas fa-cogs nav-icon"></i>
+                      <p>Roles</p>
+                    </a>
+                  </li>
+                @endcan
+              </ul>
+            </li>
+          @endif
+          
+          @can('clients_access')
+            <li class="nav-item">
+              <a href="{{route('clients.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-users"></i>
+                <p>
+                  Clients
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('restaurants_access')
+            <li class="nav-item">
+              <a href="{{route('restaurants.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-utensils"></i>
+                <p>
+                  Restaurants
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('offers_access')
+            <li class="nav-item">
+              <a href="{{route('offers.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-dollar-sign"></i>
+                <p>
+                  Offers
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('payments_access')
+            <li class="nav-item">
+              <a href="{{route('payments.index')}}" class="nav-link">
+                <i class="nav-icon far fa-credit-card"></i>
+                <p>
+                  Payments
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('cities_access')
+            <li class="nav-item">
+              <a href="{{route('cities.index')}}" class="nav-link">
+                <i class="nav-icon 	fas fa-city"></i>
+                <p>
+                  Cities
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('categories_access')
+            <li class="nav-item">
+              <a href="{{route('categories.index')}}" class="nav-link">
+                <i class="nav-icon 	fas fa-boxes"></i>
+                <p>
+                  Categories
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('neighborhoods_access')
+            <li class="nav-item">
+              <a href="{{route('neighborhoods.index')}}" class="nav-link">
+                <i class="nav-icon 	fas fa-map"></i>
+                <p>
+                  Neighborhoods
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('contact-messages_access')
+            <li class="nav-item">
+              <a href="{{route('contact-messages.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-comment"></i>
+                <p>
+                  Contact Messages
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('settings_access')
+            <li class="nav-item">
+              <a href="{{route('settings.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                  Settings
+                </p>
+              </a>
+            </li>
+          @endcan
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

@@ -5,10 +5,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">
-                    <a class="btn btn-info" href="{{route('categories.create')}}"><i class="fa fa-plus"></i> New Category</a>
-                </h3>
-                
+                @can('categories_create')
+                    <h3 class="card-title">
+                        <a class="btn btn-info" href="{{route('categories.create')}}"><i class="fa fa-plus"></i> New Category</a>
+                    </h3>
+                @endcan
                 <div class="card-tools">
                     <form action="{{route('categories.index')}}">
                         <div class="input-group input-group-sm" style="width: 150px;">
@@ -47,9 +48,12 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$category->name}}</td>
                                     <td>
-                                        <a href="{{route('categories.edit',['category' => $category->id])}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
-                                        <a data-value="{{'categories,'.$category->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
-                                        
+                                        @can('categories_edit')
+                                            <a href="{{route('categories.edit',['category' => $category->id])}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
+                                        @endcan
+                                        @can('categories_delete')
+                                            <a data-value="{{'categories,'.$category->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

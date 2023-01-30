@@ -1,17 +1,16 @@
 @extends('admin.layouts.app')
-@section('title','Payments')
+@section('title','Roles')
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                @can('payments_create')
-                    <h3 class="card-title">
-                        <a class="btn btn-info" href="{{route('payments.create')}}"><i class="fa fa-plus"></i> New Payment</a>
-                    </h3>
-                @endcan
+                <h3 class="card-title">
+                    <a class="btn btn-info" href="{{route('roles.create')}}"><i class="fa fa-plus"></i> New role</a>
+                </h3>
+                
                 <div class="card-tools">
-                    <form action="{{route('payments.index')}}">
+                    <form action="{{route('roles.index')}}">
                         <div class="input-group input-group-sm" style="width: 150px;">
                             <input type="text" name="search" class="form-control float-right" placeholder="Search">
                             <div class="input-group-append">
@@ -32,27 +31,25 @@
                 </div>
             </div>
             @endif
-            @if (count($payments))
+            @if (count($roles))
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Restaurant</th>
-                                <th>Paid</th>
-                                <th>Payment Date</th>
+                                <th>Name</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($payments as $payment)
+                            @foreach ($roles as $role)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{$payment->restaurant->name}}</td>
-                                    <td>{{$payment->paid_fees}}</td>
-                                    <td>{{$payment->payment_date}}</td>
+                                    <td>{{$role->name}}</td>
                                     <td>
-                                        <a href="{{route('payments.edit',['payment' => $payment->id])}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
-                                        <a data-value="{{'payments,'.$payment->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                        <a href="{{route('roles.edit',$role->id)}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
+                                        <a data-value="{{'roles,'.$role->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                        
                                     </td>
                                 </tr>
                             @endforeach
