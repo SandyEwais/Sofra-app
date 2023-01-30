@@ -42,10 +42,11 @@
             </div>
             
         </div>
-        
+        @can('settings_edit')
         <div class="card-footer">
             <button type="submit" class="btn btn-info">Submit</button>
         </div>
+        @endcan
     </form>
 </div>
 @endsection

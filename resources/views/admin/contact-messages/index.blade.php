@@ -37,7 +37,9 @@
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Type</th>
+                                        @if (Auth::user()->can('contact-messages_delete') )
                                         <th>Action</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -49,7 +51,9 @@
                                             <td>{{$contactMessage->phone}}</td>
                                             <td>{{$contactMessage->type}}</td>
                                             <td>
+                                                @can('contact-messages_delete')
                                                 <a data-value="{{'contact-messages,'.$contactMessage->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                                @endcan
                                             </td>
                                         </tr>
                                         <tr class="expandable-body">

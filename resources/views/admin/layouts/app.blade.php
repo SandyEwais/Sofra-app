@@ -71,9 +71,9 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          @if(Auth::user()->can('users.access') || Auth::user()->can('roles.access'))
-            <li class="nav-item">
-              <a href="#" class="nav-link">
+          @if(Auth::user()->can('users_access') || Auth::user()->can('roles_access'))
+            <li class="nav-item {{ (request()->is('admin/users*') || request()->is('admin/roles*')) ? 'menu-is-opening menu-open' : '' }}">
+              <a href="#" class="nav-link {{ (request()->is('admin/users*') || request()->is('admin/roles*')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                   Dashboard Permissions
@@ -83,7 +83,7 @@
               <ul class="nav nav-treeview">
                 @can('users_access')
                   <li class="nav-item">
-                    <a href="{{route('users.index')}}" class="nav-link">
+                    <a href="{{route('users.index')}}" class="nav-link {{ (request()->is('admin/users*')) ? 'active' : '' }}">
                       <i class="fas fa-users nav-icon"></i>
                       <p>Users</p>
                     </a>
@@ -91,7 +91,7 @@
                 @endcan
                 @can('roles_access')
                   <li class="nav-item">
-                    <a href="{{route('roles.index')}}" class="nav-link">
+                    <a href="{{route('roles.index')}}" class="nav-link {{ (request()->is('admin/roles*')) ? 'active' : '' }}">
                       <i class="fas fa-cogs nav-icon"></i>
                       <p>Roles</p>
                     </a>
@@ -103,7 +103,7 @@
           
           @can('clients_access')
             <li class="nav-item">
-              <a href="{{route('clients.index')}}" class="nav-link">
+              <a href="{{route('clients.index')}}" class="nav-link {{ (request()->is('admin/clients*')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-users"></i>
                 <p>
                   Clients
@@ -113,7 +113,7 @@
           @endcan
           @can('restaurants_access')
             <li class="nav-item">
-              <a href="{{route('restaurants.index')}}" class="nav-link">
+              <a href="{{route('restaurants.index')}}" class="nav-link {{ (request()->is('admin/restaurants*')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-utensils"></i>
                 <p>
                   Restaurants
@@ -123,7 +123,7 @@
           @endcan
           @can('offers_access')
             <li class="nav-item">
-              <a href="{{route('offers.index')}}" class="nav-link">
+              <a href="{{route('offers.index')}}" class="nav-link {{ (request()->is('admin/offers*')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-dollar-sign"></i>
                 <p>
                   Offers
@@ -133,7 +133,7 @@
           @endcan
           @can('payments_access')
             <li class="nav-item">
-              <a href="{{route('payments.index')}}" class="nav-link">
+              <a href="{{route('payments.index')}}" class="nav-link {{ (request()->is('admin/payments*')) ? 'active' : '' }}">
                 <i class="nav-icon far fa-credit-card"></i>
                 <p>
                   Payments
@@ -143,7 +143,7 @@
           @endcan
           @can('cities_access')
             <li class="nav-item">
-              <a href="{{route('cities.index')}}" class="nav-link">
+              <a href="{{route('cities.index')}}" class="nav-link {{ (request()->is('admin/cities*')) ? 'active' : '' }}">
                 <i class="nav-icon 	fas fa-city"></i>
                 <p>
                   Cities
@@ -153,7 +153,7 @@
           @endcan
           @can('categories_access')
             <li class="nav-item">
-              <a href="{{route('categories.index')}}" class="nav-link">
+              <a href="{{route('categories.index')}}" class="nav-link {{ (request()->is('admin/categories*')) ? 'active' : '' }}">
                 <i class="nav-icon 	fas fa-boxes"></i>
                 <p>
                   Categories
@@ -163,7 +163,7 @@
           @endcan
           @can('neighborhoods_access')
             <li class="nav-item">
-              <a href="{{route('neighborhoods.index')}}" class="nav-link">
+              <a href="{{route('neighborhoods.index')}}" class="nav-link {{ (request()->is('admin/neighborhoods*')) ? 'active' : '' }}">
                 <i class="nav-icon 	fas fa-map"></i>
                 <p>
                   Neighborhoods
@@ -173,7 +173,7 @@
           @endcan
           @can('contact-messages_access')
             <li class="nav-item">
-              <a href="{{route('contact-messages.index')}}" class="nav-link">
+              <a href="{{route('contact-messages.index')}}" class="nav-link {{ (request()->is('admin/contact-messages*')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-comment"></i>
                 <p>
                   Contact Messages
@@ -183,7 +183,7 @@
           @endcan
           @can('settings_access')
             <li class="nav-item">
-              <a href="{{route('settings.index')}}" class="nav-link">
+              <a href="{{route('settings.index')}}" class="nav-link {{ (request()->is('admin/settings*')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-cog"></i>
                 <p>
                   Settings

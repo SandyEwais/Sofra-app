@@ -5,9 +5,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
+                @can('users_create')
                 <h3 class="card-title">
                     <a class="btn btn-info" href="{{route('users.create')}}"><i class="fa fa-plus"></i> New user</a>
                 </h3>
+                @endcan
                 
                 <div class="card-tools">
                     <form action="{{route('users.index')}}">
@@ -40,7 +42,9 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
+                                @if (Auth::user()->can('users_edit') ||Auth::user()->can('users_delete') )
                                 <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -49,12 +53,17 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->email}}</td>
-                                    <td>@foreach ($user->roles->pluck('name') as $roleName)
-                                        {{$roleName}}{{$loop->last ? '' : ', '}}
-                                    @endforeach</td>
                                     <td>
+                                        @foreach ($user->roles->pluck('name') as $roleName)
+                                            {{$roleName}}{{$loop->last ? '' : ', '}}
+                                        @endforeach</td>
+                                    <td>
+                                        @can('users_edit')
                                         <a href="{{route('users.edit',$user->id)}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
+                                        @endcan
+                                        @can('users_delete')
                                         <a data-value="{{'users,'.$user->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                        @endcan
                                         
                                     </td>
                                 </tr>

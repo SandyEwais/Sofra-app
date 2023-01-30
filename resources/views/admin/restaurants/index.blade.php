@@ -36,10 +36,18 @@
                                 <th>#</th>
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th>Offers</th>
-                                <th>Payments</th>
+                                @can('offers_access')
+                                    <th>Offers</th>
+                                @endcan
+                                @can('payments_access')
+                                    <th>Payments</th>
+                                @endcan
+                                @if (Auth::user()->can('restaurants_show') ||Auth::user()->can('restaurants_delete') )
                                 <th>Action</th>
+                                @endif
+                                @can('restaurants_activate')
                                 <th>Activation</th>
+                                @endcan
                             </tr>
                         </thead>
                         <tbody>
@@ -48,16 +56,26 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$restaurant->image}}</td>
                                     <td>{{$restaurant->name}}</td>
+                                    @can('offers_access')
                                     <td><a href="{{route('offers.index')}}?restaurant_id={{$restaurant->id}}" class="btn btn-outline-success btn-xs"><i class="fas fa-dollar-sign"></i> Offers</a></td>
+                                    @endcan
+                                    @can('payments_access')
                                     <td><a href="{{route('payments.index')}}?restaurant_id={{$restaurant->id}}" class="btn btn-outline-success btn-xs"><i class="far fa-credit-card"></i> Payments</a></td>
+                                    @endcan
                                     <td>
+                                        @can('restaurants_show')
                                         <a href="{{route('restaurants.show',$restaurant->id)}}" class="btn btn-outline-info btn-xs"><i class="fas fa-eye"></i> Show</a>
+                                        @endcan
+                                        @can('restaurants_delete')
                                         <a data-value="{{'restaurants,'.$restaurant->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                        @endcan
                                         
                                     </td>
+                                    @can('restaurants_activate')
                                     <td>
                                         <a data-value="{{'restaurants,'.$restaurant->id}}{{$restaurant->activation == 1 ? ',Deactivation' : ',Activation' }}" class="btn {{$restaurant->activation == 1 ? 'btn-dark' : 'btn-outline-light'}} btn-xs activateBtn"><i class=""></i> {{$restaurant->activation == 1 ? 'Activated' : 'Deactivated'}}</a>
                                     </td>
+                                    @endcan
                                 </tr>
                             @endforeach
                         </tbody>

@@ -38,7 +38,9 @@
                                 <th>Discription</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
+                                @if (Auth::user()->can('offers_delete') )
                                 <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -51,8 +53,9 @@
                                     <td>{{$offer->start_date}}</td>
                                     <td>{{$offer->end_date}}</td>
                                     <td>
+                                        @can('offers_delete')
                                         <a data-value="{{'offers,'.$offer->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
-                                        
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

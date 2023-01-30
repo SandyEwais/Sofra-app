@@ -5,9 +5,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
+                @can('neighborhoods_create')
                 <h3 class="card-title">
                     <a class="btn btn-info" href="{{route('neighborhoods.create')}}"><i class="fa fa-plus"></i> New Neighborhood</a>
                 </h3>
+                @endcan
                 
                 <div class="card-tools">
                     <form action="{{route('neighborhoods.index')}}">
@@ -39,7 +41,10 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>City</th>
+                                @if (Auth::user()->can('neighborhoods_edit') ||Auth::user()->can('neighborhoods_delete') )
                                 <th>Action</th>
+                                @endif
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -49,9 +54,12 @@
                                     <td>{{$neighborhood->name}}</td>
                                     <td>{{$neighborhood->city->name}}</td>
                                     <td>
+                                        @can('neighborhoods_edit')
                                         <a href="{{route('neighborhoods.edit',['neighborhood' => $neighborhood->id])}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
+                                        @endcan
+                                        @can('neighborhoods_delete')
                                         <a data-value="{{'neighborhoods,'.$neighborhood->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
-                                        
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

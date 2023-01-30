@@ -5,9 +5,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
+                @can('roles_create')
                 <h3 class="card-title">
                     <a class="btn btn-info" href="{{route('roles.create')}}"><i class="fa fa-plus"></i> New role</a>
                 </h3>
+                @endcan
                 
                 <div class="card-tools">
                     <form action="{{route('roles.index')}}">
@@ -38,7 +40,9 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                @if (Auth::user()->can('roles_edit') ||Auth::user()->can('roles_delete') )
                                 <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -47,8 +51,12 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$role->name}}</td>
                                     <td>
+                                        @can('roles_edit')
                                         <a href="{{route('roles.edit',$role->id)}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
+                                        @endcan
+                                        @can('roles_delete')
                                         <a data-value="{{'roles,'.$role->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                        @endcan
                                         
                                     </td>
                                 </tr>

@@ -38,8 +38,12 @@
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Neighborhood</th>
+                                @if (Auth::user()->can('clients_delete') )
                                 <th>Action</th>
+                                @endif
+                                @can('clients_activate')
                                 <th>Activation</th>
+                                @endcan
                             </tr>
                         </thead>
                         <tbody>
@@ -51,11 +55,18 @@
                                     <td>{{$client->phone}}</td>
                                     <td>{{$client->neighborhood->name}}</td>
                                     <td>
-                                        <a data-value="{{'clients,'.$client->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
-                                    </td>
-                                    <td>
-                                        <a data-value="{{'clients,'.$client->id}}{{$client->activation == 1 ? ',Deactivation' : ',Activation' }}" class="btn {{$client->activation == 1 ? 'btn-dark' : 'btn-outline-light'}} btn-xs activateBtn"><i class=""></i> {{$client->activation == 1 ? 'Activated' : 'Deactivated'}}</a>
-                                    </td>
+                                        @can('clients_delete')
+                                            <a data-value="{{'clients,'.$client->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                        @endcan
+                                    </td>  
+                                    
+                                    
+                                    @can('clients_activate')
+                                        <td>
+                                            <a data-value="{{'clients,'.$client->id}}{{$client->activation == 1 ? ',Deactivation' : ',Activation' }}" class="btn {{$client->activation == 1 ? 'btn-dark' : 'btn-outline-light'}} btn-xs activateBtn"><i class=""></i> {{$client->activation == 1 ? 'Activated' : 'Deactivated'}}</a>
+                                        </td>
+                                    @endcan
+                                    
                                 </tr>
                             @endforeach
                         </tbody>

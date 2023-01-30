@@ -39,7 +39,9 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                @if (Auth::user()->can('categories_edit') ||Auth::user()->can('categories_delete') )
                                 <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>

@@ -41,6 +41,9 @@
                                 <th>Restaurant</th>
                                 <th>Paid</th>
                                 <th>Payment Date</th>
+                                @if (Auth::user()->can('payments_edit') ||Auth::user()->can('payments_delete') )
+                                <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -51,8 +54,12 @@
                                     <td>{{$payment->paid_fees}}</td>
                                     <td>{{$payment->payment_date}}</td>
                                     <td>
+                                        @can('payments_edit')
                                         <a href="{{route('payments.edit',['payment' => $payment->id])}}" class="btn btn-outline-secondary btn-xs"><i class="fas fa-edit"></i> Edit</a>
+                                        @endcan
+                                        @can('payments_delete')
                                         <a data-value="{{'payments,'.$payment->id}}" class="btn btn-outline-danger btn-xs deleteBtn"><i class="fas fa-trash"></i> Delete</a>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
