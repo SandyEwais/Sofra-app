@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateNotificationsTable extends Migration {
 
@@ -13,7 +14,7 @@ class CreateNotificationsTable extends Migration {
 			$table->string('title');
 			$table->string('content');
 			$table->integer('order_id')->unsigned();
-			$table->boolean('is_read');
+			$table->boolean('is_read')->default(0);
 			$table->integer('notificatable_id');
 			$table->string('notificatable_type');
 		});

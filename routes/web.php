@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\NeighborhoodController;
 use App\Http\Controllers\Admin\OfferController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Admin\RoleController;
@@ -44,6 +45,7 @@ Route::group(['prefix' => 'admin'],function(){
             Route::resource('cities',CityController::class);
             Route::resource('categories',CategoryController::class);
             Route::resource('neighborhoods',NeighborhoodController::class);
+            Route::resource('orders',OrderController::class)->only(['index','show']);
             Route::resource('restaurants',RestaurantController::class)->only(['index','show','destroy']);
             Route::post('/restaurants/{restaurant}/activate',[RestaurantController::class,'activate'])->name('restaurants.activate');
             Route::post('/restaurants/{restaurant}/deactivate',[RestaurantController::class,'deactivate'])->name('restaurants.deactivate');
@@ -56,7 +58,7 @@ Route::group(['prefix' => 'admin'],function(){
             Route::resource('payments',PaymentController::class)->only(['index','create','store','edit','update','destroy']);
             Route::resource('users',UserController::class)->only(['index','edit','update','create','store','destroy']);
             Route::resource('roles',RoleController::class)->only(['index','edit','update','create','store','destroy']);
-            Route::get('/users/change-password',[UserController::class,'changePassword'])->name('change_password');
+            Route::get('/change-password',[UserController::class,'changePassword'])->name('change_password');
             Route::post('/users/set-password',[UserController::class,'setPassword'])->name('set_password');
             Route::post('/logout',[AuthController::class,'logout'])->name('logout');
         });

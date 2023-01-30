@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model 
 {
     use Searchable;
-
+    public $columns = ['state', 'payment_method','restaurant_id'];
     protected $table = 'orders';
     public $timestamps = true;
     protected $fillable = array('total_order_price', 'meals_cost', 'restaurant_net', 'state', 'notes', 'delivery_address', 'payment_method', 'delivery_fees', 'client_id', 'app_commission', 'restaurant_id');

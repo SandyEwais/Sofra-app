@@ -24,10 +24,10 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{route('admin.home')}}" class="nav-link"><i class="nav-icon fas fa-home"></i> Home</a>
+        <a href="{{route('admin.home')}}" class="nav-link {{ (request()->is('admin')) ? 'active' : '' }}"><i class="nav-icon fas fa-home"></i> Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{route('change_password')}}" class="nav-link"><i class="nav-icon fas fa-lock"></i> Change Password</a>
+        <a href="{{route('change_password')}}" class="nav-link {{ (request()->is('admin/change-password')) ? 'active' : '' }}"><i class="nav-icon fas fa-lock"></i> Change Password</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link" id="logoutBtn"><i class="nav-icon fas fa-sign-out-alt"></i> Logout</a>
@@ -117,6 +117,16 @@
                 <i class="nav-icon fas fa-utensils"></i>
                 <p>
                   Restaurants
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('orders_access')
+            <li class="nav-item">
+              <a href="{{route('orders.index')}}" class="nav-link {{ (request()->is('admin/orders*')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-box"></i>
+                <p>
+                  Orders
                 </p>
               </a>
             </li>

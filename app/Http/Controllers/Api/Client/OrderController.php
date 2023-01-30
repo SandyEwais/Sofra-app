@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\Client;
 
 use App\Models\Meal;
+use App\Models\Order;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
-use App\Models\Order;
 
 class OrderController extends Controller
 {
@@ -27,63 +28,66 @@ class OrderController extends Controller
             return responseJson(0,'failure','Restaurant is closed now, come back during working hours');
         }
         $delivery_fees = $restaurant->delivery_fees;
+        DB::transaction(function() use ($request, $restaurant, $delivery_fees) {
+            $order = $request->user()->orders()->create([
+                'notes' => $request->notes,
+                'delivery_address' => $request->address,
+                'payment_method' => $request->payment_method,
+                'restaurant_id' => $restaurant->id,
+                'delivery_fees' => $delivery_fees
+            ]);
+            
+            $mealsCost = 0;
+    
+            foreach($request->sets as $set){
+                $meal = Meal::where('id',$set['meal_id'])->first();
+                $readySet = [
+                    $set['meal_id'] => [
+                        'quantity' => $set['quantity'],
+                        'meal_price' => $meal->price_sale ? $meal->price_sale : $meal->price,
+                        'notes' => $set['notes'] ? $set['notes'] : ''
+                    ]
+                ];
+                $order->meals()->attach($readySet);
+                $mealsCost += (($meal->price_sale ? $meal->price_sale : $meal->price) * $set['quantity']);
+            }
+    
+            if($mealsCost < $restaurant->minimum){
+                $order->meals()->delete();
+                $order->delete();
+                return responseJson(0,'failure','Minimum Charge is ' . $restaurant->minimum);
+            }
+    
+            $total = $mealsCost + $delivery_fees;
+            $commission = (settings()->commission/100) * $mealsCost;
+            $restaurantNet = $total - $commission;
+            $order->update([
+                'meals_cost' => $mealsCost,
+                'total_order_price' => $total,
+                'app_commission' => $commission,
+                'restaurant_net' => $restaurantNet
+            ]);
+    
+            $notification = $restaurant->notifications()->create([
+                'title' => 'NEW ORDER REQUESTED',
+                'content' => 'You Received A New Order From ' . $request->user()->name,
+                'order_id' => $order->id
+            ]);
+    
+            $tokens = $restaurant->ctokens()->where('token','!=','')->pluck('token')->toArray();
+            if(count($tokens)){
+                $title = $notification->title;
+                $content = $notification->content;
+                $data = [
+                    'order_id' => $notification->order_id
+                ];
+                $send = notifyByFirebase($title, $content, $tokens, $data);
+                info('firebase result:' . $send);
+            }
+        });
         
-        $order = $request->user()->orders()->create([
-            'notes' => $request->notes,
-            'delivery_address' => $request->address,
-            'payment_method' => $request->payment_method,
-            'restaurant_id' => $restaurant->id,
-            'delivery_fees' => $delivery_fees
-        ]);
         
-        $mealsCost = 0;
-
-        foreach($request->sets as $set){
-            $meal = Meal::where('id',$set['meal_id'])->first();
-            $readySet = [
-                $set['meal_id'] => [
-                    'quantity' => $set['quantity'],
-                    'meal_price' => $meal->price_sale ? $meal->price_sale : $meal->price,
-                    'notes' => $set['notes'] ? $set['notes'] : ''
-                ]
-            ];
-            $order->meals()->attach($readySet);
-            $mealsCost += (($meal->price_sale ? $meal->price_sale : $meal->price) * $set['quantity']);
-        }
-
-        if($mealsCost < $restaurant->minimum){
-            $order->meals()->delete();
-            $order->delete();
-            return responseJson(0,'failure','Minimum Charge is ' . $restaurant->minimum);
-        }
-
-        $total = $mealsCost + $delivery_fees;
-        $commission = (settings()->commission/100) * $mealsCost;
-        $restaurantNet = $total - $commission;
-        $order->update([
-            'meals_cost' => $mealsCost,
-            'total_order_price' => $total,
-            'app_commission' => $commission,
-            'restaurant_net' => $restaurantNet
-        ]);
-
-        $notification = $restaurant->notifications()->create([
-            'title' => 'NEW ORDER REQUESTED',
-            'content' => 'You Received A New Order From ' . $request->user()->name,
-            'order_id' => $order->id
-        ]);
-
-        $tokens = $restaurant->ctokens()->where('token','!=','')->pluck('token')->toArray();
-        if(count($tokens)){
-            $title = $notification->title;
-            $content = $notification->content;
-            $data = [
-                'order_id' => $notification->order_id
-            ];
-            $send = notifyByFirebase($title, $content, $tokens, $data);
-            info('firebase result:' . $send);
-        }
-        return responseJson('1','success',new OrderResource($order->fresh()));
+        return responseJson('1','success');
     }
 
     public function pastOrders(Request $request){
